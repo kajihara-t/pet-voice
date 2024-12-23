@@ -1,22 +1,15 @@
-import { Text as RNText, TextProps as RNTextProps, StyleSheet } from 'react-native';
+import {
+  Text as RNText,
+  TextProps as RNTextProps,
+  StyleSheet,
+} from "react-native";
+import { TextPreset, FontFamily } from "../types/Base";
 
-// プリセット型の定義
-export type TextPreset = 'title1' | 'title2' | 'title3' | 'body' | 'caption' | 'label';
-
-// フォントファミリーの定義を追加
-export type FontFamily = 'NotoSansJP' | 'Roboto';
-
-// コンポーネントのProps型を明示的にexport
 export interface TextProps extends RNTextProps {
-  /** テキストのプリセットスタイル */
   preset?: TextPreset;
-  /** 太字にするかどうか */
   bold?: boolean;
-  /** テキストを中央揃えにするかどうか */
   centered?: boolean;
-  /** テキストの色 */
   color?: string;
-  /** フォントファミリー */
   fontFamily?: FontFamily;
 }
 
@@ -48,21 +41,31 @@ const presetStyles = StyleSheet.create({
 });
 
 /**
- * カスタマイズ可能なテキストコンポーネント
- * @param props テキストのプロパティ
- * @param props.preset - プリセットスタイル（title1, title2, title3, body, caption, label）
- * @param props.bold - 太字にするかどうか
- * @param props.centered - テキストを中央揃えにするかどうか
- * @param props.color - テキストの色
- * @param props.fontFamily - フォントファミリー
- * @param props.style - 追加のスタイル
+ * A customizable Text component that wraps RNText with additional styling options.
+ *
+ * @prop {TextPreset} preset - Preset style (title1, title2, title3, body, caption, label)
+ * @prop {boolean} bold - Whether text should be bold
+ * @prop {boolean} centered - Whether text should be centered
+ * @prop {string} color - Text color
+ * @prop {FontFamily} fontFamily - Font family
+ * @prop {TextStyle} style - Additional styles
+ *
+ * @example
+ * <Text preset="title1" bold centered>
+ *   Header Text
+ * </Text>
+ *
+ * @example
+ * <Text preset="body" color="gray">
+ *   Body text with custom color
+ * </Text>
  */
 export const Text = ({
-  preset = 'body',
+  preset = "body",
   bold,
   centered,
   color,
-  fontFamily = 'NotoSansJP',
+  fontFamily = "NotoSansJP",
   style,
   ...rest
 }: TextProps) => {
@@ -72,8 +75,8 @@ export const Text = ({
         presetStyles[preset],
         {
           fontFamily,
-          fontWeight: bold ? 'bold' : 'normal',
-          textAlign: centered ? 'center' : undefined,
+          fontWeight: bold ? "bold" : "normal",
+          textAlign: centered ? "center" : undefined,
           color: color,
         },
         style,
