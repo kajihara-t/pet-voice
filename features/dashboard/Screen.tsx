@@ -8,7 +8,20 @@ import {
   Container,
 } from "../../components/base";
 import { StatsCard } from "./components/StatsCard";
+import { AnimatedStatsCard } from "./components/AnimatedStatsCard";
 
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * FeaturesDashboardScreen
+ *
+ * This screen provides a dashboard for the features of the application.
+ * It displays three sections: revenue, user, and performance.
+ * Each section contains several statistics, with the value, subtitle, and trend displayed.
+ * The statistics are animated when the user scrolls into view.
+ *
+ * @returns React component
+ */
+/******  c03134e2-1979-4199-bf43-61f69bbd6cb8  *******/
 export const FeaturesDashboardScreen = () => {
   // 収益関連の統計
   const revenueStats = [
@@ -88,9 +101,7 @@ export const FeaturesDashboardScreen = () => {
           </Text>
           <Container>
             {revenueStats.map((stat, index) => (
-              <View key={index} style={styles.cardWrapper}>
-                <StatsCard {...stat} />
-              </View>
+              <AnimatedStatsCard key={index} index={index} stat={stat} />
             ))}
           </Container>
           <Text preset="title3" color="white">
