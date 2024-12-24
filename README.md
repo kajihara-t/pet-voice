@@ -21,15 +21,24 @@
 .
 ├── app/                      # Expo Router application entry
 │   └── (tabs)/              # タブベースのナビゲーション
+├── assets/                   # 静的アセット（画像、フォント等）
 ├── components/              # 共通コンポーネント
 │   ├── base/               # 基本UIコンポーネント
 │   │   ├── Container.tsx   # レイアウトコンテナ
 │   │   ├── View.tsx       # 汎用ビュー
-│   │   └── ...
-│   └── display/            # 表示用コンポーネント
-│       └── Card.tsx       # カードUI
-└── features/               # 機能別コンポーネント
-    └── dashboard/         # ダッシュボード機能
+│   │   └── ...           # その他基本コンポーネント
+│   ├── display/            # 表示用コンポーネント
+│   │   └── Card.tsx       # カードUI
+│   └── types/             # コンポーネント型定義
+├── constants/               # 定数定義
+├── features/               # 機能別コンポーネント
+│   └── dashboard/         # ダッシュボード機能
+│       ├── components/    # 機能固有コンポーネント
+│       ├── hooks/        # 機能固有フック
+│       └── types/        # 機能固有の型定義
+└── hooks/                  # 共通フック
+    ├── animations/        # アニメーション関連
+    └── types/            # フック用型定義
 ```
 
 ## UI 実験場としての使い方
