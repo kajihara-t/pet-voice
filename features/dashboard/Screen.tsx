@@ -10,7 +10,6 @@ import {
 import { StatsCard } from "./components/StatsCard";
 import { AnimatedStatsCard } from "./components/AnimatedStatsCard";
 
-/*************  ✨ Codeium Command ⭐  *************/
 /**
  * FeaturesDashboardScreen
  *
@@ -21,7 +20,6 @@ import { AnimatedStatsCard } from "./components/AnimatedStatsCard";
  *
  * @returns React component
  */
-/******  c03134e2-1979-4199-bf43-61f69bbd6cb8  *******/
 export const FeaturesDashboardScreen = () => {
   // 収益関連の統計
   const revenueStats = [
