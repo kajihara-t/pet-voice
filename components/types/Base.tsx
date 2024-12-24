@@ -1,4 +1,4 @@
-import { ViewProps, ScrollViewProps, TextProps } from "react-native";
+import { ViewProps, ScrollViewProps, TextProps, ViewStyle } from "react-native";
 
 export interface BaseContainerProps extends ViewProps {
   children: React.ReactNode;
@@ -41,3 +41,8 @@ export interface BaseTextProps extends TextProps {
   color?: string;
   fontFamily?: FontFamily;
 }
+
+export type BaseShadowBoxProps = {
+  children: React.ReactNode;
+  style?: ViewStyle;
+};
