@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView as RNScrollView, StyleSheet } from "react-native";
-import { BaseScrollViewProps } from "../types/Base";
+import { BaseScrollViewProps } from "../types/base";
 
 /**
  * A basic ScrollView component that wraps its children in a RNScrollView component.

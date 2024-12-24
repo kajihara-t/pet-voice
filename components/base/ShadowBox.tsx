@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { View } from "../base/View";
-import { BaseShadowBoxProps } from "../types/Base";
+import { BaseShadowBoxProps } from "../types/base";
 
 /*************  ✨ Codeium Command ⭐  *************/
 /**
