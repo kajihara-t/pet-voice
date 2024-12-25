@@ -1,4 +1,11 @@
 import { ViewProps, ScrollViewProps, TextProps } from "react-native";
+import { ReactNode } from "react";
+import {
+  TouchableOpacityProps,
+  StyleProp,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 
 export interface BaseContainerProps extends ViewProps {
   children: React.ReactNode;
@@ -40,4 +47,17 @@ export interface BaseTextProps extends TextProps {
   centered?: boolean;
   color?: string;
   fontFamily?: FontFamily;
+}
+
+export interface ButtonProps extends Omit<TouchableOpacityProps, "children"> {
+  children?: ReactNode;
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  isLoading?: boolean;
+  disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  loadingText?: string;
 }

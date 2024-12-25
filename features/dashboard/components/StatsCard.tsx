@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { Card } from "../../../components/display/Card";
 import { Text } from "../../../components/base/Text";
 import { StatsCardProps } from "../types";
+import { ShadowBox } from "@/components/display";
 
 export const StatsCard: React.FC<StatsCardProps> = ({
   title,
