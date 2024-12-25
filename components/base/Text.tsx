@@ -3,7 +3,7 @@ import {
   TextProps as RNTextProps,
   StyleSheet,
 } from "react-native";
-import { TextPreset, FontFamily } from "../types/Base";
+import { TextPreset, FontFamily } from "../types/base";
 
 export interface TextProps extends RNTextProps {
   preset?: TextPreset;

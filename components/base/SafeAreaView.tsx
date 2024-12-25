@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import { BaseSafeAreaViewProps } from "../types/Base";
+import { BaseSafeAreaViewProps } from "../types/base";
 
 /**
  * A basic safe area component that wraps its children in a

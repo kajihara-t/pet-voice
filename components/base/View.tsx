@@ -1,6 +1,6 @@
-import React from 'react';
-import { View as RNView, StyleSheet } from 'react-native';
-import { BaseViewProps } from '../types/Base';
+import React from "react";
+import { View as RNView, StyleSheet } from "react-native";
+import { BaseViewProps } from "../types/base";
 
 export const View: React.FC<BaseViewProps> = ({
   children,
@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   wrap: {
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
   },
   centered: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
