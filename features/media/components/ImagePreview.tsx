@@ -11,6 +11,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={styles.image} resizeMode="cover" />
+      {/* TODO: Androidでプレビューがうまくいってなかったので調査する */}
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
           <Button
