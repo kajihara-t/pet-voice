@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { BaseContainerProps } from "../types/Base";
+import { BaseContainerProps } from "../types/base";
 
 /**
  * A basic container component that wraps its children in a `View` component.

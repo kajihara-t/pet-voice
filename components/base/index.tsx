@@ -3,3 +3,4 @@ export * from "./SafeAreaView";
 export * from "./Text";
 export * from "./View";
 export * from "./ScrollView";
+export * from "./ShadowBox";
