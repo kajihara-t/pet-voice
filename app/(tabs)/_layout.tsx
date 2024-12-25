@@ -1,7 +1,7 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, View, StyleSheet } from "react-native";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -17,6 +17,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const tintColor = Colors[colorScheme ?? "light"].tint;
 
   return (
     <Tabs
@@ -52,7 +53,16 @@ export default function TabLayout() {
         name="(peek)"
         options={{
           title: "peek",
-          tabBarIcon: ({ color }) => <TabBarIcon name="image" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <View style={styles.centerButton}>
+              <View style={[styles.button, { backgroundColor: tintColor }]}>
+                <TabBarIcon
+                  name="image"
+                  color={focused ? "#FFFFFF" : "#FFFFFF80"}
+                />
+              </View>
+            </View>
+          ),
           headerShown: false,
         }}
       />
@@ -68,3 +78,26 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  centerButton: {
+    top: -20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+});
