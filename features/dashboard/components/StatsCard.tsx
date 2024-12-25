@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { Card } from "../../../components/display/Card";
 import { Text } from "../../../components/base/Text";
 import { StatsCardProps } from "../types/components";
-import { ShadowBox } from "@/components/base";
+import { ShadowBox } from "@/components/display";
 
 /**
  * A card component for displaying a statistic with an optional subtitle and trend.
