@@ -22,6 +22,7 @@ export type ImagePreviewProps = {
   uri: string;
   onBack: () => void;
   onSubmit: () => void;
+  disabled?: boolean;
 };
 
 // 画像選択の結果型
