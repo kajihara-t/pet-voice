@@ -10,6 +10,8 @@ import type { PetMoodAnalysis } from "@/__mocks__/services/petMode/types";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
+// TODO: UIが微妙なので改めて作り方を考える. 後でやる
+
 const Confetti = ({ style }) => {
   const translateY = React.useRef(new Animated.Value(0)).current;
   const opacity = React.useRef(new Animated.Value(0)).current;
