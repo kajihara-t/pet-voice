@@ -28,7 +28,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "画像を保存するために許可が必要です。",
+          "savePhotosPermission": "画像を保存するために許可が必要です。"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
