@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Image, Animated } from "react-native";
-import { View, Container } from "@/components/base";
+import React, { useEffect, useRef } from "react";
+import { StyleSheet, Image, Animated, View, Alert } from "react-native";
+import { Container } from "@/components/base";
 import { useLocalSearchParams, router } from "expo-router";
 import { Button } from "@/components/base/Button";
 import { PetLoadingOverlay } from "@/components/feedback/PetLoadingOverlay";
@@ -9,6 +9,8 @@ import { analyzePetMood } from "@/__mocks__/services/petMode";
 import type { PetMoodAnalysis } from "@/__mocks__/services/petMode/types";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useInstagramShare } from "@/hooks/media/useInstagramShare";
+import ViewShot from "react-native-view-shot";
 
 // TODO: UIが微妙なので改めて作り方を考える. 後でやる
 
@@ -55,15 +57,7 @@ const AnimatedText = ({ text, style, delay = 0 }) => {
   }, []);
 
   return (
-    <Animated.Text
-      style={[
-        style,
-        {
-          opacity,
-          transform: [{ translateY }],
-        },
-      ]}
-    >
+    <Animated.Text style={[style, { opacity, transform: [{ translateY }] }]}>
       {text}
     </Animated.Text>
   );
@@ -71,6 +65,8 @@ const AnimatedText = ({ text, style, delay = 0 }) => {
 
 export default function ResultScreen() {
   const { execute, isLoading } = useMockApi<PetMoodAnalysis>();
+  const { saveAndShare } = useInstagramShare();
+  const previewRef = useRef<ViewShot>(null);
 
   const { imageUri, mood, confidence } = useLocalSearchParams<{
     imageUri: string;
@@ -93,25 +89,30 @@ export default function ResultScreen() {
     }
   };
 
-  const handleShare = () => {
-    // TODO: シェア機能の実装
-    console.log("Share functionality to be implemented");
+  const handleShare = async () => {
+    if (!imageUri) return;
+    try {
+      await saveAndShare(imageUri);
+    } catch (error) {
+      console.error("Error sharing:", error);
+      Alert.alert("エラー", "共有に失敗しました");
+    }
   };
 
   return (
     <Container style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.imageContainer}>
-          <Confetti style={styles.leftConfetti} />
-          <Confetti style={styles.rightConfetti} />
-          <Image
-            source={{ uri: imageUri }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
+        <ViewShot ref={previewRef} style={styles.shareContent}>
+          <View style={styles.imageContainer}>
+            <Confetti style={styles.leftConfetti} />
+            <Confetti style={styles.rightConfetti} />
+            <Image
+              source={{ uri: imageUri }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </View>
 
-        <View>
           <View style={styles.moodCard}>
             <AnimatedText
               text={`"${mood}"`}
@@ -119,7 +120,7 @@ export default function ResultScreen() {
               delay={400}
             />
           </View>
-        </View>
+        </ViewShot>
 
         <View style={styles.buttonContainer}>
           <Button
@@ -165,42 +166,26 @@ export default function ResultScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    gap: 24,
-  },
-  imageContainer: {
-    alignItems: "center",
-  },
+  container: { flex: 1 },
+  content: { flex: 1, padding: 20, gap: 24 },
+  imageContainer: { alignItems: "center" },
   image: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
+    width: 256,
+    height: 256,
+    borderRadius: 12,
     borderWidth: 3,
-    borderColor: "white",
-  },
-  confetti: {
-    position: "absolute",
-    fontSize: 32,
-  },
-  leftConfetti: {
-    left: 40,
-    top: 60,
-  },
-  rightConfetti: {
-    right: 40,
-    top: 60,
+    borderColor: "gray",
   },
   moodCard: {
     backgroundColor: "#D3D3D3",
-    padding: 8,
+    padding: 12, // 8から12に
     borderRadius: 8,
     width: "100%",
+    marginTop: 32, // 追加
   },
+  confetti: { position: "absolute", fontSize: 32 },
+  leftConfetti: { left: 40, top: 60 },
+  rightConfetti: { right: 40, top: 60 },
   moodText: {
     fontSize: 24,
     textAlign: "center",
@@ -213,13 +198,8 @@ const styles = StyleSheet.create({
     marginTop: "auto",
     paddingBottom: 20,
   },
-  button: {
-    flex: 1,
-  },
-  retryButton: {
-    backgroundColor: "#34D399",
-  },
-  shareGradient: {
-    borderRadius: 8,
-  },
+  button: { flex: 1 },
+  retryButton: { backgroundColor: "#34D399" },
+  shareGradient: { borderRadius: 8 },
+  shareContent: { alignItems: "center", gap: 24 },
 });
