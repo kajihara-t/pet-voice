@@ -1,32 +1,40 @@
 import React from "react";
-import { View as RNView, StyleSheet } from "react-native";
+import { View as RNView, ViewProps, StyleSheet } from "react-native";
 import { BaseViewProps } from "../types/base";
 
-export const View: React.FC<BaseViewProps> = ({
-  children,
-  row = false,
-  wrap = false,
-  center = false,
-  gap = 0,
-  style,
-  ...props
-}) => {
-  return (
-    <RNView
-      style={[
-        styles.view,
-        row && styles.row,
-        wrap && styles.wrap,
-        center && styles.centered,
-        gap > 0 && { gap },
-        style,
-      ]}
-      {...props}
-    >
-      {children}
-    </RNView>
-  );
-};
+export const View = React.forwardRef<RNView, BaseViewProps>(
+  (
+    {
+      children,
+      row = false,
+      wrap = false,
+      center = false,
+      gap = 0,
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <RNView
+        ref={ref}
+        style={[
+          styles.view,
+          row && styles.row,
+          wrap && styles.wrap,
+          center && styles.centered,
+          gap > 0 && { gap },
+          style,
+        ]}
+        {...props}
+      >
+        {children}
+      </RNView>
+    );
+  }
+);
+
+View.displayName = "View";
 
 const styles = StyleSheet.create({
   view: {
@@ -43,5 +51,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-export default View;

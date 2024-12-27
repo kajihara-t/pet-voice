@@ -7,6 +7,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   uri,
   onBack,
   onSubmit,
+  disabled = false, // TODO: disabledを含めて対応
 }) => {
   return (
     <View style={styles.container}>
