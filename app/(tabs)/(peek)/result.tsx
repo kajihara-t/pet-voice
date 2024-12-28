@@ -1,3 +1,4 @@
+// TODO: UIが微妙なので改めて作り方を考える. 後でやる
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Image, Animated, View, Alert } from "react-native";
 import { Container } from "@/components/base";
@@ -9,33 +10,25 @@ import { analyzePetMood } from "@/__mocks__/services/petMode";
 import type { PetMoodAnalysis } from "@/__mocks__/services/petMode/types";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useInstagramShare } from "@/hooks/media/useInstagramShare";
+import { useShare } from "@/hooks/media/useShare";
 import ViewShot from "react-native-view-shot";
+import ConfettiCannon from "react-native-confetti-cannon";
 
-// TODO: UIが微妙なので改めて作り方を考える. 後でやる
+interface AnimatedTextProps {
+  text: string;
+  style: any; // TextStyle型を使用する場合はインポートして指定
+  delay?: number;
+  onAnimationComplete?: () => void;
+}
 
-const Confetti = ({ style }) => {
-  const translateY = React.useRef(new Animated.Value(0)).current;
-  const opacity = React.useRef(new Animated.Value(0)).current;
-  return (
-    <Animated.Text
-      style={[
-        styles.confetti,
-        style,
-        {
-          opacity,
-          transform: [{ translateY }, { rotate: "45deg" }],
-        },
-      ]}
-    >
-      🎊
-    </Animated.Text>
-  );
-};
-
-const AnimatedText = ({ text, style, delay = 0 }) => {
-  const opacity = React.useRef(new Animated.Value(0)).current;
-  const translateY = React.useRef(new Animated.Value(10)).current;
+const AnimatedText: React.FC<AnimatedTextProps> = ({
+  text,
+  style,
+  delay = 0,
+  onAnimationComplete,
+}) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(10)).current;
 
   useEffect(() => {
     Animated.sequence([
@@ -53,8 +46,8 @@ const AnimatedText = ({ text, style, delay = 0 }) => {
           useNativeDriver: true,
         }),
       ]),
-    ]).start();
-  }, []);
+    ]).start(onAnimationComplete);
+  }, [delay, opacity, translateY, onAnimationComplete]);
 
   return (
     <Animated.Text style={[style, { opacity, transform: [{ translateY }] }]}>
@@ -65,14 +58,19 @@ const AnimatedText = ({ text, style, delay = 0 }) => {
 
 export default function ResultScreen() {
   const { execute, isLoading } = useMockApi<PetMoodAnalysis>();
-  const { saveAndShare } = useInstagramShare();
+  const { shareImage } = useShare();
   const previewRef = useRef<ViewShot>(null);
+  const confettiRef = useRef<ConfettiCannon>(null);
 
-  const { imageUri, mood, confidence } = useLocalSearchParams<{
+  const { imageUri, mood } = useLocalSearchParams<{
     imageUri: string;
     mood: string;
-    confidence: string;
   }>();
+
+  // 初期レンダリング時に紙吹雪を発射
+  useEffect(() => {
+    confettiRef.current?.start();
+  }, []);
 
   const handleRetry = async () => {
     const result = await execute(() => analyzePetMood(imageUri));
@@ -82,7 +80,6 @@ export default function ResultScreen() {
         params: {
           imageUri,
           mood: result.mood,
-          confidence: result.confidence.toString(),
           timestamp: result.timestamp,
         },
       });
@@ -92,7 +89,7 @@ export default function ResultScreen() {
   const handleShare = async () => {
     if (!imageUri) return;
     try {
-      await saveAndShare(imageUri);
+      await shareImage(imageUri);
     } catch (error) {
       console.error("Error sharing:", error);
       Alert.alert("エラー", "共有に失敗しました");
@@ -104,8 +101,6 @@ export default function ResultScreen() {
       <View style={styles.content}>
         <ViewShot ref={previewRef} style={styles.shareContent}>
           <View style={styles.imageContainer}>
-            <Confetti style={styles.leftConfetti} />
-            <Confetti style={styles.rightConfetti} />
             <Image
               source={{ uri: imageUri }}
               style={styles.image}
@@ -160,6 +155,15 @@ export default function ResultScreen() {
           </Button>
         </View>
       </View>
+      <ConfettiCannon
+        ref={confettiRef}
+        count={200}
+        origin={{ x: window.width / 2, y: window.height / 4 }}
+        autoStart={false}
+        fadeOut
+        explosionSpeed={200}
+        fallSpeed={2000}
+      />
       {isLoading && <PetLoadingOverlay />}
     </Container>
   );
