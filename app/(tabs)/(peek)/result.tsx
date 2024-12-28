@@ -1,3 +1,4 @@
+// TODO: UIが微妙なので改めて作り方を考える. 後でやる
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Image, Animated, View, Alert } from "react-native";
 import { Container } from "@/components/base";
@@ -11,43 +12,20 @@ import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useShare } from "@/hooks/media/useShare";
 import ViewShot from "react-native-view-shot";
-
-// TODO: UIが微妙なので改めて作り方を考える. 後でやる
-
-interface ConfettiProps {
-  style: any; // ViewStyle型を使用する場合はインポートして指定
-}
-
-const Confetti: React.FC<ConfettiProps> = ({ style }) => {
-  const translateY = useRef(new Animated.Value(0)).current;
-  const opacity = useRef(new Animated.Value(0)).current;
-
-  return (
-    <Animated.Text
-      style={[
-        styles.confetti,
-        style,
-        {
-          opacity,
-          transform: [{ translateY }, { rotate: "45deg" }],
-        },
-      ]}
-    >
-      🎊
-    </Animated.Text>
-  );
-};
+import ConfettiCannon from "react-native-confetti-cannon";
 
 interface AnimatedTextProps {
   text: string;
   style: any; // TextStyle型を使用する場合はインポートして指定
   delay?: number;
+  onAnimationComplete?: () => void;
 }
 
 const AnimatedText: React.FC<AnimatedTextProps> = ({
   text,
   style,
   delay = 0,
+  onAnimationComplete,
 }) => {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(10)).current;
@@ -68,8 +46,8 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
           useNativeDriver: true,
         }),
       ]),
-    ]).start();
-  }, [delay, opacity, translateY]);
+    ]).start(onAnimationComplete);
+  }, [delay, opacity, translateY, onAnimationComplete]);
 
   return (
     <Animated.Text style={[style, { opacity, transform: [{ translateY }] }]}>
@@ -82,11 +60,17 @@ export default function ResultScreen() {
   const { execute, isLoading } = useMockApi<PetMoodAnalysis>();
   const { shareImage } = useShare();
   const previewRef = useRef<ViewShot>(null);
+  const confettiRef = useRef<ConfettiCannon>(null);
 
   const { imageUri, mood } = useLocalSearchParams<{
     imageUri: string;
     mood: string;
   }>();
+
+  // 初期レンダリング時に紙吹雪を発射
+  useEffect(() => {
+    confettiRef.current?.start();
+  }, []);
 
   const handleRetry = async () => {
     const result = await execute(() => analyzePetMood(imageUri));
@@ -117,8 +101,6 @@ export default function ResultScreen() {
       <View style={styles.content}>
         <ViewShot ref={previewRef} style={styles.shareContent}>
           <View style={styles.imageContainer}>
-            <Confetti style={styles.leftConfetti} />
-            <Confetti style={styles.rightConfetti} />
             <Image
               source={{ uri: imageUri }}
               style={styles.image}
@@ -173,6 +155,15 @@ export default function ResultScreen() {
           </Button>
         </View>
       </View>
+      <ConfettiCannon
+        ref={confettiRef}
+        count={200}
+        origin={{ x: window.width / 2, y: window.height / 4 }}
+        autoStart={false}
+        fadeOut
+        explosionSpeed={200}
+        fallSpeed={2000}
+      />
       {isLoading && <PetLoadingOverlay />}
     </Container>
   );
