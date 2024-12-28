@@ -9,10 +9,13 @@ import { StyleSheet } from "react-native";
 export { ErrorBoundary } from "expo-router";
 
 export const unstable_settings = {
-  initialRouteName: "(tabs)",
+  initialRouteName: "onboarding",
 };
 
-SplashScreen.preventAutoHideAsync();
+// アプリ起動時に即座にSplashScreenを表示
+SplashScreen.preventAutoHideAsync().catch(() => {
+  /* keep splash screen */
+});
 
 function RootLayoutNav() {
   return (
@@ -21,7 +24,7 @@ function RootLayoutNav() {
         name="onboarding"
         options={{
           presentation: "fullScreenModal",
-          animation: "slide_from_right",
+          animation: "slide_from_bottom",
           gestureEnabled: false,
         }}
       />
@@ -48,7 +51,10 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      // フォントロード完了後にSplashScreenを非表示に
+      SplashScreen.hideAsync().catch(() => {
+        /* ignore */
+      });
     }
   }, [loaded]);
 
