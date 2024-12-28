@@ -9,14 +9,19 @@ import { analyzePetMood } from "@/__mocks__/services/petMode";
 import type { PetMoodAnalysis } from "@/__mocks__/services/petMode/types";
 import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useInstagramShare } from "@/hooks/media/useInstagramShare";
+import { useShare } from "@/hooks/media/useShare";
 import ViewShot from "react-native-view-shot";
 
 // TODO: UIが微妙なので改めて作り方を考える. 後でやる
 
-const Confetti = ({ style }) => {
-  const translateY = React.useRef(new Animated.Value(0)).current;
-  const opacity = React.useRef(new Animated.Value(0)).current;
+interface ConfettiProps {
+  style: any; // ViewStyle型を使用する場合はインポートして指定
+}
+
+const Confetti: React.FC<ConfettiProps> = ({ style }) => {
+  const translateY = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+
   return (
     <Animated.Text
       style={[
@@ -33,9 +38,19 @@ const Confetti = ({ style }) => {
   );
 };
 
-const AnimatedText = ({ text, style, delay = 0 }) => {
-  const opacity = React.useRef(new Animated.Value(0)).current;
-  const translateY = React.useRef(new Animated.Value(10)).current;
+interface AnimatedTextProps {
+  text: string;
+  style: any; // TextStyle型を使用する場合はインポートして指定
+  delay?: number;
+}
+
+const AnimatedText: React.FC<AnimatedTextProps> = ({
+  text,
+  style,
+  delay = 0,
+}) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(10)).current;
 
   useEffect(() => {
     Animated.sequence([
@@ -54,7 +69,7 @@ const AnimatedText = ({ text, style, delay = 0 }) => {
         }),
       ]),
     ]).start();
-  }, []);
+  }, [delay, opacity, translateY]);
 
   return (
     <Animated.Text style={[style, { opacity, transform: [{ translateY }] }]}>
@@ -65,13 +80,12 @@ const AnimatedText = ({ text, style, delay = 0 }) => {
 
 export default function ResultScreen() {
   const { execute, isLoading } = useMockApi<PetMoodAnalysis>();
-  const { saveAndShare } = useInstagramShare();
+  const { shareImage } = useShare();
   const previewRef = useRef<ViewShot>(null);
 
-  const { imageUri, mood, confidence } = useLocalSearchParams<{
+  const { imageUri, mood } = useLocalSearchParams<{
     imageUri: string;
     mood: string;
-    confidence: string;
   }>();
 
   const handleRetry = async () => {
@@ -82,7 +96,6 @@ export default function ResultScreen() {
         params: {
           imageUri,
           mood: result.mood,
-          confidence: result.confidence.toString(),
           timestamp: result.timestamp,
         },
       });
@@ -92,7 +105,7 @@ export default function ResultScreen() {
   const handleShare = async () => {
     if (!imageUri) return;
     try {
-      await saveAndShare(imageUri);
+      await shareImage(imageUri);
     } catch (error) {
       console.error("Error sharing:", error);
       Alert.alert("エラー", "共有に失敗しました");
