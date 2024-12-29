@@ -1,12 +1,6 @@
-import { Stack, router } from "expo-router";
-import { Pressable } from "react-native";
-import { FontAwesome6 } from "@expo/vector-icons";
-import { useColorScheme } from "@/components/useColorScheme";
-import Colors from "@/constants/Colors";
+import { Stack } from "expo-router";
 
 export default function SettingsLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Stack
       screenOptions={{
@@ -17,12 +11,6 @@ export default function SettingsLayout() {
         name="index"
         options={{
           title: "設定",
-        }}
-      />
-      <Stack.Screen
-        name="news"
-        options={{
-          presentation: "modal",
         }}
       />
     </Stack>
