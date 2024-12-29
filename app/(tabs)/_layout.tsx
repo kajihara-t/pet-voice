@@ -1,6 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import { Pressable, View, StyleSheet } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -8,6 +8,8 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 import Animated, {
   useAnimatedStyle,
@@ -83,6 +85,26 @@ export default function TabLayout() {
           backgroundColor: Colors[colorScheme ?? "light"].background,
         },
         headerShown: useClientOnlyValue(false, true),
+        headerRight: () => (
+          <Pressable
+            onPress={() => router.push("../news")}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+              marginRight: 12,
+            })}
+          >
+            <FontAwesome6
+              name="bell"
+              size={25}
+              // color={Colors[colorScheme ?? "light"].text}
+              color={"black"}
+            />
+          </Pressable>
+        ),
+        headerStyle: {
+          minHeight: 60,
+          // backgroundColor: Colors[colorScheme ?? "light"].background,
+        },
         // これを追加することで、選択時のタブの背景が適切に表示されます
         tabBarActiveBackgroundColor:
           Colors[colorScheme ?? "light"].tabIconSelected,
@@ -105,7 +127,6 @@ export default function TabLayout() {
         options={{
           title: "peek",
           tabBarIcon: ({ focused }) => <TabBarCenterButton focused={focused} />,
-          headerShown: false,
         }}
       />
       <Tabs.Screen

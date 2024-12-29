@@ -1,4 +1,6 @@
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
+import { Pressable } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { useColorScheme } from "@/components/useColorScheme";
 import Colors from "@/constants/Colors";
 
@@ -8,14 +10,6 @@ export default function SettingsLayout() {
   return (
     <Stack
       screenOptions={{
-        // headerStyle: {
-        //   backgroundColor: Colors[colorScheme ?? "light"].background,
-        // },
-        // headerTintColor: Colors[colorScheme ?? "light"].text,
-        // headerTitleStyle: {
-        //   fontFamily: "Roboto",
-        // },
-
         headerShown: false,
       }}
     >
@@ -23,6 +17,12 @@ export default function SettingsLayout() {
         name="index"
         options={{
           title: "設定",
+        }}
+      />
+      <Stack.Screen
+        name="news"
+        options={{
+          presentation: "modal",
         }}
       />
     </Stack>

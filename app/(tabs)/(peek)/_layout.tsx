@@ -4,7 +4,7 @@ export default function PeekLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         presentation: "modal",
       }}
     >

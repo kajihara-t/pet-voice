@@ -34,6 +34,12 @@ function RootLayoutNav() {
           contentStyle: styles.screen,
         }}
       />
+      <Stack.Screen
+        name="news"
+        options={{
+          presentation: "modal",
+        }}
+      />
       <Stack.Screen name="modal" options={{ presentation: "modal" }} />
     </Stack>
   );
