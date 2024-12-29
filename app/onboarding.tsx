@@ -11,7 +11,7 @@ import Animated, {
 import LottieView from "lottie-react-native";
 import { StatusBar } from "expo-status-bar";
 import { useApp } from "../context/AppContext";
-import { ReactNode } from "react";
+import { ReactNode, useRef, useState } from "react";
 
 const AnimatedLottie = Animated.createAnimatedComponent(LottieView);
 
@@ -40,12 +40,27 @@ const EmojiAnimation: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 export default function OnboardingScreen() {
   const { completeOnboarding } = useApp();
+  const pagerRef = useRef<PagerView>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handleNextPage = () => {
+    if (currentPage === 2) {
+      completeOnboarding();
+    } else {
+      pagerRef.current?.setPage(currentPage + 1);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
       <View style={styles.content}>
-        <PagerView initialPage={0} style={styles.pagerView}>
+        <PagerView
+          ref={pagerRef}
+          initialPage={0}
+          style={styles.pagerView}
+          onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
+        >
           {/* ページ1: Welcome */}
           <View key="1" style={styles.page}>
             <Animated.View style={styles.animationContainer}>
@@ -108,6 +123,26 @@ export default function OnboardingScreen() {
             </Animated.View>
           </View>
         </PagerView>
+        <View style={styles.indicatorsContainer}>
+          {[0, 1, 2].map((index) => (
+            <View
+              key={index}
+              style={[
+                styles.indicator,
+                currentPage === index && styles.indicatorActive,
+              ]}
+            />
+          ))}
+        </View>
+
+        {/* Navigation Button */}
+        <View style={styles.navigationContainer}>
+          <TouchableOpacity onPress={handleNextPage} style={styles.button}>
+            <Text style={styles.buttonText}>
+              {currentPage === 2 ? "はじめる" : "次へ"}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -165,5 +200,25 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "600",
+  },
+  indicatorsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 16,
+  },
+  indicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#d1d5db",
+    marginHorizontal: 4,
+  },
+  indicatorActive: {
+    backgroundColor: "#6366f1",
+    width: 24,
+  },
+  navigationContainer: {
+    alignItems: "center",
+    paddingBottom: 24,
   },
 });
