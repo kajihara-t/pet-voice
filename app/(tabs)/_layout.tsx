@@ -1,6 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import { Pressable, View, StyleSheet } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -8,6 +8,8 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 import Animated, {
   useAnimatedStyle,
@@ -73,35 +75,50 @@ function TabBarCenterButton({ focused }: { focused: boolean }) {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const tintColor = Colors[colorScheme ?? "light"].tint;
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
+        tabBarInactiveTintColor: Colors[colorScheme ?? "light"].tabIconDefault,
+        tabBarStyle: {
+          backgroundColor: Colors[colorScheme ?? "light"].background,
+        },
         headerShown: useClientOnlyValue(false, true),
+        headerRight: () => (
+          <Pressable
+            onPress={() => router.push("../news")}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+              marginRight: 12,
+            })}
+          >
+            <FontAwesome6
+              name="bell"
+              size={25}
+              // color={Colors[colorScheme ?? "light"].text}
+              color={"black"}
+            />
+          </Pressable>
+        ),
+        headerStyle: {
+          minHeight: 60,
+          // backgroundColor: Colors[colorScheme ?? "light"].background,
+        },
+        // これを追加することで、選択時のタブの背景が適切に表示されます
+        tabBarActiveBackgroundColor:
+          Colors[colorScheme ?? "light"].tabIconSelected,
+        tabBarInactiveBackgroundColor: "transparent",
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(settings)"
         options={{
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: "Settings",
+          tabBarIcon: ({ color }) => (
+            <View>
+              <TabBarIcon name="gear" color={color} />
+            </View>
           ),
         }}
       />
@@ -110,7 +127,6 @@ export default function TabLayout() {
         options={{
           title: "peek",
           tabBarIcon: ({ focused }) => <TabBarCenterButton focused={focused} />,
-          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -119,6 +135,16 @@ export default function TabLayout() {
           title: "Tab Dashboard",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="dashboard" color={color} />
+          ),
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="(history)"
+        options={{
+          title: "history",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="history" color={color} />
           ),
         }}
       />

@@ -140,16 +140,6 @@ export default function ResultScreen() {
             variant="primary"
             size="md"
             style={[styles.button]}
-            rightIcon={
-              <LinearGradient
-                colors={["#833AB4", "#E1306C", "#F77737"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.shareGradient}
-              >
-                <FontAwesome name="instagram" size={36} color="#fff" />
-              </LinearGradient>
-            }
           >
             投稿
           </Button>

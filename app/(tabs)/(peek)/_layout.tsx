@@ -4,7 +4,7 @@ export default function PeekLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         presentation: "modal",
       }}
     >
@@ -18,6 +18,14 @@ export default function PeekLayout() {
         name="preview"
         options={{
           title: "プレビュー",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="result"
+        options={{
+          title: "結果",
+          headerShown: true,
         }}
       />
     </Stack>

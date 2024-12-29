@@ -37,7 +37,7 @@ export function AppProvider({ children }: PropsWithChildren) {
         }
 
         if (completed === "true") {
-          router.replace("/(tabs)");
+          router.replace("/(tabs)/(peek)");
         } else {
           router.replace("/onboarding");
         }
@@ -57,7 +57,7 @@ export function AppProvider({ children }: PropsWithChildren) {
   const completeOnboarding = async () => {
     try {
       await AsyncStorage.setItem("onboarding_completed", "true");
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/(peek)");
     } catch (error) {
       console.error("Failed to complete onboarding:", error);
     }
