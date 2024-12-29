@@ -9,7 +9,7 @@ import { StyleSheet } from "react-native";
 export { ErrorBoundary } from "expo-router";
 
 export const unstable_settings = {
-  initialRouteName: "(tabs)",
+  initialRouteName: "(tabs)/(peek)",
 };
 
 // アプリ起動時に即座にSplashScreenを表示
