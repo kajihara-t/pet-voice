@@ -40,6 +40,8 @@ export default function SettingsScreen() {
     },
   ];
 
+  //   TODO: instagramハッシュタグとかも需要があれば追加する
+
   const basicSettings: MenuItem[] = [
     {
       label: "通知設定",
