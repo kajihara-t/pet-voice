@@ -70,6 +70,7 @@ export default function OnboardingScreen() {
                 source={require("@/assets/animations/camera.json")}
                 autoPlay
                 loop={false}
+                speed={1.5}
                 style={styles.lottie}
               />
             </Animated.View>
