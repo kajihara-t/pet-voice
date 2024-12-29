@@ -20,3 +20,18 @@ export type MenuItem = {
   onPress?: () => void;
   showArrow?: boolean;
 };
+
+export type ListItemData = {
+  id: string;
+  imageUrl?: string;
+  title: string;
+  subtitle?: string;
+  timestamp?: string;
+  onPress?: () => void;
+};
+
+export type ListSectionProps = {
+  title?: string;
+  items: ListItemData[];
+  ListEmptyComponent?: React.ComponentType<any> | React.ReactElement;
+};
