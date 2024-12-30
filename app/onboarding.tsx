@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PagerView from "react-native-pager-view";
 import Animated, {
-  FadeIn,
   useAnimatedStyle,
   withRepeat,
   withSequence,
@@ -113,14 +112,6 @@ export default function OnboardingScreen() {
               <EmojiAnimation>🔄</EmojiAnimation>
             </View>
             <Text style={styles.subtitle}>Instagramで共有できます</Text>
-            <Animated.View entering={FadeIn} style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={completeOnboarding}
-                style={styles.button}
-              >
-                <Text style={styles.buttonText}>はじめる</Text>
-              </TouchableOpacity>
-            </Animated.View>
           </View>
         </PagerView>
         <View style={styles.indicatorsContainer}>
