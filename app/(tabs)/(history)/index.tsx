@@ -2,6 +2,7 @@ import { Container } from "@/components/base/Container";
 import { ListSection } from "@/components/display/ListSection";
 import { ListItemData } from "@/components/types/display";
 import { EmptyState } from "@/features/history/components/EmptyState";
+import { StyleSheet } from "react-native";
 
 export default function HistoryScreen() {
   const dogBreeds = [
@@ -66,7 +67,7 @@ export default function HistoryScreen() {
   );
 
   return (
-    <Container>
+    <Container style={styles.Container}>
       <ListSection
         title="作成履歴"
         items={historyItems}
@@ -75,3 +76,9 @@ export default function HistoryScreen() {
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  Container: {
+    backgroundColor: "#fdf2f8",
+  },
+});

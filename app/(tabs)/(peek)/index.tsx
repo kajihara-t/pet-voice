@@ -33,5 +33,6 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 12,
     justifyContent: "center",
+    backgroundColor: "#fdf2f8",
   },
 });

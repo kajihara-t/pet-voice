@@ -160,7 +160,7 @@ export default function ResultScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "#fdf2f8" },
   content: { flex: 1, padding: 20, gap: 24 },
   imageContainer: { alignItems: "center" },
   image: {
