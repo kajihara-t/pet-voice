@@ -114,7 +114,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(settings)"
         options={{
-          title: "Settings",
+          title: "設定",
           tabBarIcon: ({ color }) => (
             <View>
               <TabBarIcon name="gear" color={color} />
@@ -142,7 +142,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(history)"
         options={{
-          title: "history",
+          title: "履歴",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="history" color={color} />
           ),
