@@ -2,6 +2,16 @@ import { StyleSheet, FlatList, View, Pressable, Image } from "react-native";
 import Text from "@/components/base/Text";
 import { ListItemData, ListSectionProps } from "../types/display";
 
+/**
+ * A component that renders a section with a title and a list of items.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} [props.title] - The title of the section.
+ * @param {Array<ListItemData>} props.items - The list of items to display.
+ * @param {React.ComponentType} [props.ListEmptyComponent] - The component to render when the list is empty.
+ *
+ * @returns {JSX.Element} The rendered ListSection component.
+ */
 export function ListSection({
   title,
   items,
