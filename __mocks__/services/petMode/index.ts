@@ -3,11 +3,11 @@ import type { MockResponse } from "../../api/types";
 import type { PetMoodAnalysis } from "./types";
 
 const SAMPLE_MOODS = [
-  "元気いっぱいで遊びたい気分",
-  "ちょっぴり甘えたい気分",
+  "元気いっぱいで遊びたい気分元気いっぱいで遊びたい気分",
+  "ちょっぴり甘えたい気分ちょっぴり甘えたい気分ちょっぴり甘えたい気分ちょっぴり甘えたい気分",
   "のんびりまったり気分",
   "お腹が空いて食べたい気分",
-  "すやすや眠たい気分",
+  "すやすや眠たい気分すやすや眠たい気分",
 ];
 
 export const analyzePetMood = async (

@@ -139,7 +139,7 @@ export default function ResultScreen() {
             onPress={handleShare}
             variant="primary"
             size="md"
-            style={[styles.button]}
+            style={[styles.button, styles.postButton]}
           >
             投稿
           </Button>
@@ -164,18 +164,18 @@ const styles = StyleSheet.create({
   content: { flex: 1, padding: 20, gap: 24 },
   imageContainer: { alignItems: "center" },
   image: {
-    width: 256,
-    height: 256,
+    width: 224,
+    height: 224,
     borderRadius: 12,
-    borderWidth: 3,
-    borderColor: "gray",
+    borderWidth: 2,
+    borderColor: "#FF70A0",
   },
   moodCard: {
     backgroundColor: "#D3D3D3",
-    padding: 12, // 8から12に
+    padding: 12,
     borderRadius: 8,
     width: "100%",
-    marginTop: 32, // 追加
+    marginTop: 32,
   },
   confetti: { position: "absolute", fontSize: 32 },
   leftConfetti: { left: 40, top: 60 },
@@ -192,8 +192,15 @@ const styles = StyleSheet.create({
     marginTop: "auto",
     paddingBottom: 20,
   },
-  button: { flex: 1 },
-  retryButton: { backgroundColor: "#34D399" },
+  button: {
+    flex: 1,
+  },
+  retryButton: {
+    backgroundColor: "#9AE6B4",
+  },
+  postButton: {
+    backgroundColor: "#FF70A0",
+  },
   shareGradient: { borderRadius: 8 },
   shareContent: { alignItems: "center", gap: 24 },
 });
