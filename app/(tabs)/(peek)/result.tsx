@@ -1,14 +1,21 @@
 // TODO: UIが微妙なので改めて作り方を考える. 後でやる
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Image, Animated, View, Alert } from "react-native";
-import { Container } from "@/components/base";
+import {
+  StyleSheet,
+  Image,
+  Animated,
+  View,
+  Alert,
+  Pressable,
+  ScrollView,
+} from "react-native";
+import { Container, Text } from "@/components/base";
 import { useLocalSearchParams, router } from "expo-router";
-import { Button } from "@/components/base/Button";
 import { PetLoadingOverlay } from "@/components/feedback/PetLoadingOverlay";
 import { useMockApi } from "@/hooks/useMockApi";
 import { analyzePetMood } from "@/__mocks__/services/petMode";
 import type { PetMoodAnalysis } from "@/__mocks__/services/petMode/types";
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useShare } from "@/hooks/media/useShare";
 import ViewShot from "react-native-view-shot";
@@ -97,103 +104,184 @@ export default function ResultScreen() {
   };
 
   return (
-    <Container style={styles.container}>
-      <View style={styles.content}>
-        <ViewShot ref={previewRef} style={styles.shareContent}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: imageUri }}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </View>
+    <ScrollView>
+      <Container style={styles.container}>
+        <View style={styles.content}>
+          <ViewShot ref={previewRef} style={styles.shareContent}>
+            <View style={styles.imageWrapper}>
+              <LinearGradient
+                colors={["#E1306C", "#405DE6", "#5851DB", "#FF1A75", "#FFD700"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.imageGradientBorder}
+              >
+                <Image
+                  source={{ uri: imageUri }}
+                  style={styles.image}
+                  resizeMode="cover"
+                />
+              </LinearGradient>
+            </View>
 
-          <View style={styles.moodCard}>
-            <AnimatedText
-              text={`"${mood}"`}
-              style={styles.moodText}
-              delay={400}
-            />
-          </View>
-        </ViewShot>
+            <View style={styles.moodCard}>
+              <View style={styles.quoteIconContainer}>
+                <MaterialCommunityIcons
+                  name="format-quote-open"
+                  size={24}
+                  color="#9CA3AF"
+                />
+              </View>
+              <AnimatedText text={mood} style={styles.moodText} delay={400} />
+              <View style={[styles.quoteIconContainer, styles.quoteIconEnd]}>
+                <MaterialCommunityIcons
+                  name="format-quote-close"
+                  size={24}
+                  color="#9CA3AF"
+                />
+              </View>
+            </View>
+          </ViewShot>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => router.back()}
-            variant="secondary"
-            size="md"
-            style={styles.button}
-          >
-            戻る
-          </Button>
-          <Button
-            onPress={handleRetry}
-            variant="primary"
-            size="md"
-            style={[styles.button, styles.retryButton]}
-            disabled={isLoading}
-          >
-            もう一度
-          </Button>
-          <Button
-            onPress={handleShare}
-            variant="primary"
-            size="md"
-            style={[styles.button]}
-          >
-            投稿
-          </Button>
+          <View style={styles.iconContainer}>
+            <View style={styles.iconColumn}>
+              <Pressable
+                onPress={() => {
+                  router.dismissAll();
+                }}
+                style={styles.iconWrapper}
+              >
+                <MaterialCommunityIcons name="home" size={32} color="#666666" />
+              </Pressable>
+            </View>
+
+            <View style={styles.iconColumn}>
+              <Pressable onPress={handleRetry} style={styles.iconWrapper}>
+                <FontAwesome name="magic" size={32} color="#1F9D55" />
+              </Pressable>
+              <Text style={styles.iconLabel}>＼同じ画像でもう一度／</Text>
+            </View>
+
+            <View style={styles.iconColumn}>
+              <Pressable onPress={handleShare} style={styles.iconWrapper}>
+                <MaterialCommunityIcons
+                  name="share-variant"
+                  size={32}
+                  color="#FF70A0"
+                />
+              </Pressable>
+            </View>
+          </View>
         </View>
-      </View>
-      <ConfettiCannon
-        ref={confettiRef}
-        count={200}
-        origin={{ x: window.width / 2, y: window.height / 4 }}
-        autoStart={false}
-        fadeOut
-        explosionSpeed={200}
-        fallSpeed={2000}
-      />
-      {isLoading && <PetLoadingOverlay />}
-    </Container>
+        <ConfettiCannon
+          ref={confettiRef}
+          count={200}
+          origin={{ x: window.width / 2, y: window.height / 4 }}
+          autoStart={false}
+          fadeOut
+          explosionSpeed={200}
+          fallSpeed={2000}
+        />
+        {isLoading && <PetLoadingOverlay />}
+      </Container>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "#fdf2f8" },
   content: { flex: 1, padding: 20, gap: 24 },
-  imageContainer: { alignItems: "center" },
+  imageWrapper: {
+    alignItems: "center",
+  },
+  imageGradientBorder: {
+    padding: 2,
+    borderRadius: 14,
+  },
   image: {
     width: 256,
     height: 256,
     borderRadius: 12,
-    borderWidth: 3,
-    borderColor: "gray",
+    backgroundColor: "#fdf2f8",
   },
+
   moodCard: {
-    backgroundColor: "#D3D3D3",
-    padding: 12, // 8から12に
-    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    padding: 24,
+    borderRadius: 12,
     width: "100%",
-    marginTop: 32, // 追加
+    marginTop: 32,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  moodText: {
+    fontSize: 24,
+    textAlign: "center",
+    color: "#4B5563",
+    fontStyle: "italic",
+    lineHeight: 32,
+    paddingHorizontal: 8,
+  },
+  quoteIconContainer: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+  },
+  quoteIconEnd: {
+    left: undefined,
+    right: 8,
+    bottom: 8,
+    top: undefined,
   },
   confetti: { position: "absolute", fontSize: 32 },
   leftConfetti: { left: 40, top: 60 },
   rightConfetti: { right: 40, top: 60 },
-  moodText: {
-    fontSize: 24,
-    textAlign: "center",
-    color: "#808080",
-    fontStyle: "italic",
-  },
   buttonContainer: {
     flexDirection: "row",
-    gap: 16,
+    justifyContent: "space-around",
+    alignItems: "center",
     marginTop: "auto",
     paddingBottom: 20,
+    paddingHorizontal: 16,
   },
-  button: { flex: 1 },
-  retryButton: { backgroundColor: "#34D399" },
+  button: {
+    flex: 1,
+  },
+  retryButton: {
+    backgroundColor: "#9AE6B4",
+  },
+  postButton: {
+    backgroundColor: "#FF70A0",
+  },
   shareGradient: { borderRadius: 8 },
   shareContent: { alignItems: "center", gap: 24 },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "flex-start",
+    marginTop: "auto",
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  iconWrapper: {
+    padding: 8,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  iconLabel: {
+    fontSize: 10,
+    color: "#666666",
+    textAlign: "center",
+    marginTop: 4,
+  },
+  iconColumn: {
+    alignItems: "center",
+    minHeight: 70,
+  },
 });

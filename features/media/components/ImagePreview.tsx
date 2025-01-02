@@ -1,36 +1,47 @@
 import React from "react";
-import { StyleSheet, Image, View } from "react-native";
-import { Button } from "@/components/base/Button";
-import { ImagePreviewProps } from "../types/components";
+import { StyleSheet, Image, Pressable, View } from "react-native";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { Text } from "@/components/base";
+
+interface ImagePreviewProps {
+  uri: string;
+  onBack: () => void;
+  onSubmit: () => void;
+  disabled?: boolean;
+}
 
 export const ImagePreview: React.FC<ImagePreviewProps> = ({
   uri,
   onBack,
   onSubmit,
-  disabled = false, // TODO: disabledを含めて対応
+  disabled,
 }) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri }} style={styles.image} resizeMode="cover" />
-      {/* TODO: Androidでプレビューがうまくいってなかったので調査する */}
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
-          <Button
-            onPress={onBack}
-            variant="secondary"
-            size="sm"
-            style={styles.button}
-          >
-            戻る
-          </Button>
-          <Button
+      <View style={styles.imageContainer}>
+        <Image source={{ uri }} style={styles.image} resizeMode="cover" />
+      </View>
+
+      <View style={styles.footer}>
+        <Pressable onPress={onBack} style={styles.backButton}>
+          <Text style={styles.buttonText}>もどる</Text>
+        </Pressable>
+        <View style={styles.submitWrapper}>
+          <Pressable
             onPress={onSubmit}
-            variant="primary"
-            size="sm"
-            style={styles.button}
+            style={[
+              styles.submitButton,
+              disabled && styles.submitButtonDisabled,
+            ]}
+            disabled={disabled}
           >
-            送信
-          </Button>
+            <FontAwesome
+              name="magic"
+              size={24}
+              color={disabled ? "#9CA3AF" : "#FFFFFF"}
+            />
+          </Pressable>
+          <Text style={styles.submitText}>気持ちを聞く</Text>
         </View>
       </View>
     </View>
@@ -40,22 +51,62 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "space-between",
+  },
+  backButton: {
+    padding: 8,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  buttonText: {
+    color: "#666666",
+    fontSize: 16,
+  },
+  imageContainer: {
+    alignItems: "center",
+    padding: 16,
   },
   image: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "#f0f0f0",
+    width: 300,
+    height: 300,
+    borderRadius: 12,
+    backgroundColor: "#fdf2f8",
+    borderColor: "#E5E7EB",
   },
-  buttonContainer: {
-    paddingVertical: 16,
-    marginTop: 32,
-  },
-  buttonWrapper: {
+  footer: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+    paddingTop: 16,
+    alignItems: "center",
+    justifyContent: "space-between",
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 16,
+    marginBottom: 16,
   },
-  button: {
-    minWidth: 120,
+  submitWrapper: {
+    alignItems: "center",
+    marginRight: 8,
+  },
+
+  submitButton: {
+    backgroundColor: "#1F9D55",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  submitButtonDisabled: {
+    backgroundColor: "#E5E7EB",
+  },
+  submitText: {
+    color: "#666666",
+    fontSize: 12,
+    marginTop: 4,
+    textAlign: "center",
   },
 });

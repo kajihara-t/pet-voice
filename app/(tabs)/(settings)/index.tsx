@@ -82,7 +82,7 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <Container>
+    <Container style={styles.Container}>
       <ScrollView style={styles.scrollView}>
         {/* 広告枠（ダミー） */}
         <View style={styles.adContainer}>
@@ -100,6 +100,10 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
+  Container: {
+    flex: 1,
+    backgroundColor: "#fdf2f8",
+  },
   scrollView: {
     flex: 1,
   },
